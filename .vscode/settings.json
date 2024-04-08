@@ -1,0 +1,12 @@
+{
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit"
+	},
+	"dart.lineLength": 200,
+	"[dart]": {
+		"editor.codeActionsOnSave": {
+			"quickfix.insertSemicolon": "explicit"
+		}
+	}
+}
