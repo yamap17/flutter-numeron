@@ -151,19 +151,24 @@ class _HomePageState extends State<HomePage> {
                 }),
           ),
           Container(
-            height: 270,
+            height: 300,
             padding: const EdgeInsets.only(top: 20, bottom: 20),
             alignment: Alignment.center,
-            child: Column(
+            child: ListView(
+              scrollDirection: Axis.vertical,
               children: <Widget>[
                 for (var result in results)
-                  Card(
-                    margin: const EdgeInsets.all(5),
-                    child: Text(
-                      '${result.inputNumbers} => Hits: ${result.hits}, Blows: ${result.blows}',
-                      style: const TextStyle(fontSize: 20),
+                  Container(
+                    padding: const EdgeInsets.only(right: 10, left: 10),
+                    alignment: Alignment.center,
+                    child: Card(
+                      margin: const EdgeInsets.all(5),
+                      child: Text(
+                        '${result.inputNumbers} => Hits: ${result.hits}, Blows: ${result.blows}',
+                        style: const TextStyle(fontSize: 20),
+                      ),
                     ),
-                  ),
+                  )
               ],
             ),
           ),
