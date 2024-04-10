@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:numeron/views/HomePage.dart';
+import 'package:numeron/views/home_page.dart';
 
 class NumeronApp extends StatelessWidget {
   const NumeronApp({super.key});
