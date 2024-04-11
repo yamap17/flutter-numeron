@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:numeron/models/guess.dart';
-import 'package:numeron/widgets/guess_card.dart';
+import 'package:numeron/models/guess_result.dart';
+import 'package:numeron/widgets/guess_result_card.dart';
 
-class GuessHistoryListBoard extends StatelessWidget {
-  const GuessHistoryListBoard({
+class GuessResultCardListBoard extends StatelessWidget {
+  const GuessResultCardListBoard({
     super.key,
     this.height = 280,
-    required this.guesses,
+    required this.guessResults,
   });
 
-  final List<Guess> guesses;
+  final List<GuessResult> guessResults;
   final double height;
 
   @override
@@ -20,7 +20,7 @@ class GuessHistoryListBoard extends StatelessWidget {
       alignment: Alignment.center,
       child: ListView(
         scrollDirection: Axis.vertical,
-        children: <Widget>[for (var guess in guesses) GuessCard(guess: guess)],
+        children: <Widget>[for (var guess in guessResults) GuessResultCard(guess: guess)],
       ),
     );
   }
