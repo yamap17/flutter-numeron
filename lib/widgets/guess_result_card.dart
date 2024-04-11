@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:numeron/models/guess.dart';
+import 'package:numeron/models/guess_result.dart';
 
-class GuessCard extends StatelessWidget {
-  const GuessCard({
+class GuessResultCard extends StatelessWidget {
+  const GuessResultCard({
     super.key,
     required this.guess,
   });
 
-  final Guess guess;
+  final GuessResult guess;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class GuessCard extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Text(
-              '${guess.selectedNumbers.join()}   Hits: ${guess.hits}, Blows: ${guess.blows}',
+              '${List.from(guess.playerGuessNumbers.values).join()}   Hits: ${guess.hits}, Blows: ${guess.blows}',
               style: const TextStyle(fontSize: 20),
             )),
       ),

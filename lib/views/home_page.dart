@@ -1,143 +1,85 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:numeron/models/guess.dart';
+import 'package:numeron/models/guess_result.dart';
+import 'package:numeron/providers/game_provider.dart';
 import 'package:numeron/views/result_page.dart';
-import 'package:numeron/widgets/guess_card.dart';
+import 'package:numeron/widgets/guess_result_card_list_board.dart';
 import 'package:numeron/widgets/number_card.dart';
+import 'package:numeron/widgets/player_guess_numbers_board.dart';
 import 'package:numeron/widgets/text_elevated_button.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
+class HomePage extends StatelessWidget {
+  HomePage({super.key, required this.title});
 
   final String title;
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  List<int> targetNumbers = [];
-  List<int> selectedNumbers = [];
-  List<Guess> guesses = [];
   final int count = 3;
-
-  @override
-  void initState() {
-    super.initState();
-
-    setState(() {
-      targetNumbers = generateRandomNumbers(count);
-      guesses = [];
-    });
-  }
-
-  List<int> generateRandomNumbers(int count) {
-    List<int> numbers = [];
-    while (numbers.length < count) {
-      int randomNumber = Random().nextInt(10);
-      if (!numbers.contains(randomNumber)) {
-        numbers.add(randomNumber);
-      }
-    }
-    return numbers;
-  }
-
-  void _unselectNumber(int index) {
-    if (selectedNumbers.isEmpty && selectedNumbers.length <= index + 1) {
-      return;
-    }
-    if (!selectedNumbers.asMap().containsKey(index)) {
-      return;
-    }
-    setState(() {
-      selectedNumbers.removeAt(index);
-    });
-  }
-
-  void _selectNumber(int number) => {
-        setState(() {
-          selectedNumbers.add(number);
-        })
-      };
-
-  bool checkResult(List<int> selectedNumbers) {
-    int hits = 0;
-    int blows = 0;
-
-    for (int i = 0; i < count; i++) {
-      if (targetNumbers[i] == selectedNumbers[i]) {
-        hits++;
-      } else if (targetNumbers.contains(selectedNumbers[i])) {
-        blows++;
-      }
-    }
-
-    final resultSelectedNumbers = List<int>.unmodifiable(selectedNumbers);
-
-    Guess guess = Guess(
-      selectedNumbers: resultSelectedNumbers,
-      hits: hits,
-      blows: blows,
-    );
-    setState(() {
-      guesses = [...guesses, guess];
-      selectedNumbers.clear();
-    });
-
-    if (hits == count) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void _restartGame() => {
-        setState(() {
-          targetNumbers = generateRandomNumbers(count);
-          guesses.clear();
-          selectedNumbers.clear();
-        })
-      };
-
-  List<int> numberCards = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  final List<int> numberCards = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   @override
   Widget build(BuildContext context) {
+    final GameProvider gameProvider = Provider.of<GameProvider>(context, listen: true);
+
+    void restartGame() {
+      debugPrint('restartGame');
+
+      gameProvider.setRandomTargetNumbers(count);
+      gameProvider.resetGuessResults();
+      gameProvider.resetPlayerGuessNumbers();
+    }
+
+    bool guess(Map<int, int?> playerGuessNumbers, List<int> targetNumbers) {
+      debugPrint('guess');
+
+      int hits = 0;
+      int blows = 0;
+
+      if (playerGuessNumbers.containsValue(null)) {
+        throw Exception('Please select all numbers.');
+      }
+
+      for (int i = 0; i < count; i++) {
+        if (targetNumbers[i] == playerGuessNumbers[i]) {
+          hits++;
+        } else if (targetNumbers.contains(playerGuessNumbers[i])) {
+          blows++;
+        }
+      }
+
+      final resultSelectedNumbers = Map<int, int?>.unmodifiable(playerGuessNumbers);
+
+      GuessResult guessResult = GuessResult(
+        playerGuessNumbers: resultSelectedNumbers,
+        hits: hits,
+        blows: blows,
+      );
+      final guessResults = [...gameProvider.guessResults, guessResult];
+      gameProvider.setGuessResults(guessResults);
+      gameProvider.resetPlayerGuessNumbers();
+
+      if (hits == count) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Column(
         children: <Widget>[
-          Container(
-              height: 150,
-              color: const Color.fromARGB(255, 152, 127, 202),
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  for (int i = 0; i < count; i++)
-                    NumberCard(
-                      number: selectedNumbers.length > i ? selectedNumbers[i] : null,
-                      onTap: () => _unselectNumber(i),
-                    )
-                ],
-              )),
+          PlayerGuessNumbersBoard(
+            playerGuessNumbers: gameProvider.playerGuessNumbers,
+            onTap: (int index) => gameProvider.unselectNumber(index),
+          ),
           TextElevatedButton(
-            onPressed: _restartGame,
+            onPressed: restartGame,
             text: 'Restart',
           ),
-          Container(
-            height: 280,
-            padding: const EdgeInsets.only(top: 20, bottom: 20),
-            alignment: Alignment.center,
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: <Widget>[for (var guess in guesses) GuessCard(guess: guess)],
-            ),
+          GuessResultCardListBoard(
+            guessResults: gameProvider.guessResults,
           ),
           Container(
             padding: const EdgeInsets.only(top: 80, bottom: 50),
@@ -153,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {
                           debugPrint('Card taped');
                           // 選択した数字が3つ以上になったら、選択できないようにする
-                          if (selectedNumbers.length >= count) {
+                          if (!gameProvider.playerGuessNumbers.containsValue(null)) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: const Duration(milliseconds: 500),
@@ -163,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                             return;
                           }
                           // 選択した数字がすでに選択されている場合、選択できないようにする
-                          if (selectedNumbers.contains(number)) {
+                          if (gameProvider.playerGuessNumbers.containsValue(number)) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: const Duration(milliseconds: 500),
@@ -172,13 +114,7 @@ class _HomePageState extends State<HomePage> {
                             );
                             return;
                           }
-                          _selectNumber(number);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              duration: const Duration(milliseconds: 500),
-                              content: Text('$numberを追加しました'),
-                            ),
-                          );
+                          gameProvider.selectNumber(number);
                         },
                       ),
                   ],
@@ -188,7 +124,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          if (selectedNumbers.length < count) {
+          if (gameProvider.playerGuessNumbers.containsValue(null)) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 500),
@@ -198,7 +134,7 @@ class _HomePageState extends State<HomePage> {
             return;
           }
 
-          bool result = checkResult(selectedNumbers);
+          bool result = guess(gameProvider.playerGuessNumbers, gameProvider.targetNumbers);
           if (!result) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
