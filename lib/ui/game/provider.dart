@@ -7,14 +7,15 @@ class GameProvider with ChangeNotifier {
   final int count = 3;
   List<int> targetNumbers = [];
   List<int> playerGuessNumbers = [];
-  List<GuessResult> guessResults = [];
+  List<GuessResult?> guessResults = [];
 
   void restartGame() {
     debugPrint('restartGame');
 
-    _setRandomTargetNumbers(count);
-    _resetGuessResults();
-    _resetPlayerGuessNumbers();
+    targetNumbers = _setRandomTargetNumbers(count);
+    guessResults.clear();
+    playerGuessNumbers.clear();
+    notifyListeners();
   }
 
   bool guess(List<int> playerGuessNumbers, List<int> targetNumbers) {
@@ -46,8 +47,9 @@ class GameProvider with ChangeNotifier {
       hits: hits,
       blows: blows,
     );
-    _addGuessResults(guessResult);
-    _resetPlayerGuessNumbers();
+    guessResults = [...guessResults, guessResult];
+    playerGuessNumbers.clear();
+    notifyListeners();
 
     if (hits == count) {
       return true;
@@ -76,7 +78,7 @@ class GameProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _setRandomTargetNumbers(int count) {
+  List<int> _setRandomTargetNumbers(int count) {
     debugPrint('setRandomTargetNumbers');
 
     List<int> numbers = [];
@@ -86,28 +88,6 @@ class GameProvider with ChangeNotifier {
         numbers.add(randomNumber);
       }
     }
-    targetNumbers = numbers;
-    notifyListeners();
-  }
-
-  void _resetGuessResults() {
-    debugPrint('resetGuessResults');
-
-    guessResults.clear();
-    notifyListeners();
-  }
-
-  void _addGuessResults(GuessResult guessResult) {
-    debugPrint('setGuessResults');
-
-    guessResults = [...guessResults, guessResult];
-    notifyListeners();
-  }
-
-  void _resetPlayerGuessNumbers() {
-    debugPrint('resetPlayerGuessNumbers');
-
-    playerGuessNumbers.clear();
-    notifyListeners();
+    return numbers;
   }
 }
