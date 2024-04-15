@@ -7,7 +7,7 @@ class GameProvider with ChangeNotifier {
   final int count = 3;
   List<int> targetNumbers = [];
   List<int> playerGuessNumbers = [];
-  List<GuessResult> guessResults = [] as List<GuessResult>;
+  List<GuessResult> guessResults = [];
 
   void restartGame() {
     debugPrint('restartGame');
@@ -39,16 +39,14 @@ class GameProvider with ChangeNotifier {
         blows++;
       }
     }
-
-    final resultSelectedNumbers = playerGuessNumbers;
+    final resultSelectedNumbers = List<int>.unmodifiable(playerGuessNumbers);
 
     GuessResult guessResult = GuessResult(
       playerGuessNumbers: resultSelectedNumbers,
       hits: hits,
       blows: blows,
     );
-    final results = [...guessResults, guessResult];
-    _setGuessResults(results);
+    _addGuessResults(guessResult);
     _resetPlayerGuessNumbers();
 
     if (hits == count) {
@@ -99,10 +97,10 @@ class GameProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _setGuessResults(List<GuessResult> guessResults) {
+  void _addGuessResults(GuessResult guessResult) {
     debugPrint('setGuessResults');
 
-    this.guessResults = guessResults;
+    guessResults = [...guessResults, guessResult];
     notifyListeners();
   }
 
