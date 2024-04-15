@@ -20,7 +20,7 @@ class GuessResultCard extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
             child: Text(
-              '${List.from(guess.playerGuessNumbers.values).join()}   Hits: ${guess.hits}, Blows: ${guess.blows}',
+              '${guess.playerGuessNumbers.join()}   Hits: ${guess.hits}, Blows: ${guess.blows}',
               style: const TextStyle(fontSize: 20),
             )),
       ),

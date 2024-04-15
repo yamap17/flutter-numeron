@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:numeron/ui/game/screen.dart';
 import 'package:numeron/ui/home/screen.dart';
-import 'package:numeron/ui/practice/screen.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key, required this.title});
@@ -22,7 +22,7 @@ class ResultScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
-                    return PracticeScreen(
+                    return GameScreen(
                       title: '1人で遊ぶ',
                     );
                   }),

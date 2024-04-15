@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:numeron/models/guess_result.dart';
-import 'package:numeron/ui/practice/provider.dart';
-import 'package:numeron/ui/practice/result_screen.dart';
+import 'package:numeron/ui/game/provider.dart';
+import 'package:numeron/ui/game/result_screen.dart';
 import 'package:numeron/widgets/guess_result_card_list_board.dart';
 import 'package:numeron/widgets/number_card.dart';
 import 'package:numeron/widgets/player_guess_numbers_board.dart';
 import 'package:numeron/widgets/text_elevated_button.dart';
 import 'package:provider/provider.dart';
 
-class PracticeScreen extends StatelessWidget {
-  PracticeScreen({super.key, required this.title});
+class GameScreen extends StatelessWidget {
+  GameScreen({super.key, required this.title});
 
   final String title;
   final int count = 3;
@@ -17,51 +16,7 @@ class PracticeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PracticeProvider practiceProvider = Provider.of<PracticeProvider>(context, listen: true);
-
-    void restartGame() {
-      debugPrint('restartGame');
-
-      practiceProvider.setRandomTargetNumbers(count);
-      practiceProvider.resetGuessResults();
-      practiceProvider.resetPlayerGuessNumbers();
-    }
-
-    bool guess(Map<int, int?> playerGuessNumbers, List<int> targetNumbers) {
-      debugPrint('guess');
-
-      int hits = 0;
-      int blows = 0;
-
-      if (playerGuessNumbers.containsValue(null)) {
-        throw Exception('Please select all numbers.');
-      }
-
-      for (int i = 0; i < count; i++) {
-        if (targetNumbers[i] == playerGuessNumbers[i]) {
-          hits++;
-        } else if (targetNumbers.contains(playerGuessNumbers[i])) {
-          blows++;
-        }
-      }
-
-      final resultSelectedNumbers = Map<int, int?>.unmodifiable(playerGuessNumbers);
-
-      GuessResult guessResult = GuessResult(
-        playerGuessNumbers: resultSelectedNumbers,
-        hits: hits,
-        blows: blows,
-      );
-      final guessResults = [...practiceProvider.guessResults, guessResult];
-      practiceProvider.setGuessResults(guessResults);
-      practiceProvider.resetPlayerGuessNumbers();
-
-      if (hits == count) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+    final GameProvider gameProvider = Provider.of<GameProvider>(context, listen: true);
 
     return Scaffold(
       appBar: AppBar(
@@ -71,15 +26,15 @@ class PracticeScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           PlayerGuessNumbersBoard(
-            playerGuessNumbers: practiceProvider.playerGuessNumbers,
-            onTap: (int index) => practiceProvider.unselectNumber(index),
+            playerGuessNumbers: gameProvider.playerGuessNumbers,
+            onTap: (int index) => gameProvider.unselectNumber(index),
           ),
           TextElevatedButton(
-            onPressed: restartGame,
+            onPressed: gameProvider.restartGame,
             text: 'Restart',
           ),
           GuessResultCardListBoard(
-            guessResults: practiceProvider.guessResults,
+            guessResults: gameProvider.guessResults,
           ),
           Container(
             padding: const EdgeInsets.only(top: 80, bottom: 50),
@@ -95,7 +50,7 @@ class PracticeScreen extends StatelessWidget {
                         onTap: () {
                           debugPrint('Card taped');
                           // 選択した数字が3つ以上になったら、選択できないようにする
-                          if (!practiceProvider.playerGuessNumbers.containsValue(null)) {
+                          if (gameProvider.playerGuessNumbers.length >= count) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: const Duration(milliseconds: 500),
@@ -105,7 +60,7 @@ class PracticeScreen extends StatelessWidget {
                             return;
                           }
                           // 選択した数字がすでに選択されている場合、選択できないようにする
-                          if (practiceProvider.playerGuessNumbers.containsValue(number)) {
+                          if (gameProvider.playerGuessNumbers.toSet().length != count) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: const Duration(milliseconds: 500),
@@ -114,7 +69,7 @@ class PracticeScreen extends StatelessWidget {
                             );
                             return;
                           }
-                          practiceProvider.selectNumber(number);
+                          gameProvider.selectNumber(number);
                         },
                       ),
                   ],
@@ -124,7 +79,7 @@ class PracticeScreen extends StatelessWidget {
       ),
       floatingActionButton: ElevatedButton(
         onPressed: () {
-          if (practiceProvider.playerGuessNumbers.containsValue(null)) {
+          if (gameProvider.playerGuessNumbers.length != count) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(milliseconds: 500),
@@ -134,7 +89,7 @@ class PracticeScreen extends StatelessWidget {
             return;
           }
 
-          bool result = guess(practiceProvider.playerGuessNumbers, practiceProvider.targetNumbers);
+          bool result = gameProvider.guess(gameProvider.playerGuessNumbers, gameProvider.targetNumbers);
           if (!result) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(

@@ -11,7 +11,7 @@ class PlayerGuessNumbersBoard extends StatelessWidget {
     required this.onTap,
   });
 
-  final Map<int, int?> playerGuessNumbers;
+  final List<int> playerGuessNumbers;
   final int count;
   final double height;
   final Color color;

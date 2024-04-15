@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:numeron/ui/game/provider.dart';
 import 'package:numeron/ui/home/provider.dart';
 import 'package:numeron/ui/home/screen.dart';
-import 'package:numeron/ui/practice/provider.dart';
 import 'package:provider/provider.dart';
 
 class NumeronApp extends StatelessWidget {
@@ -14,8 +14,8 @@ class NumeronApp extends StatelessWidget {
           ChangeNotifierProvider<HomeProvider>(
             create: (context) => HomeProvider(),
           ),
-          ChangeNotifierProvider<PracticeProvider>(
-            create: (context) => PracticeProvider(),
+          ChangeNotifierProvider<GameProvider>(
+            create: (context) => GameProvider(),
           ),
         ],
         child: MaterialApp(

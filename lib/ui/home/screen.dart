@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:numeron/ui/practice/screen.dart';
+import 'package:numeron/ui/game/screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, required this.title});
@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
-                    return PracticeScreen(
+                    return GameScreen(
                       title: '1人で遊ぶ',
                     );
                   }),
