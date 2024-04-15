@@ -3,14 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:numeron/models/guess_result.dart';
 
-class GameProvider with ChangeNotifier {
+class PracticeProvider with ChangeNotifier {
   final int count = 3;
   List<int> targetNumbers = [];
-  Map<int, int?> playerGuessNumbers = {
-    0: null,
-    1: null,
-    2: null,
-  };
+  List<int> playerGuessNumbers = [];
   List<GuessResult> guessResults = [];
 
   void setRandomTargetNumbers(int count) {
