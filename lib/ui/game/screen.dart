@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:numeron/ui/game/provider.dart';
 import 'package:numeron/ui/game/result_screen.dart';
+import 'package:numeron/utils/analytics.dart';
 import 'package:numeron/utils/initialize_wrapper.dart';
 import 'package:numeron/widgets/guess_result_card_list_board.dart';
 import 'package:numeron/widgets/number_card.dart';
@@ -19,8 +20,13 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final GameProvider gameProvider = Provider.of<GameProvider>(context, listen: true);
 
+    initialize() {
+      Analytics().logPage(title);
+      gameProvider.initialize();
+    }
+
     return InitializeWrapper(
-        onInit: gameProvider.initialize,
+        onInit: initialize,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,

@@ -8,7 +8,7 @@
 .buildlog/
 .history
 .svn/
-migrate_working_dir/
+vendor/
 
 # IntelliJ related
 *.iml
@@ -22,14 +22,17 @@ migrate_working_dir/
 #.vscode/
 
 # Flutter/Dart/Pub related
+.fvm/flutter_sdk
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
+**/ios/**/GoogleService-Info.plist
 
 # Symbolication related
 app.*.symbols
@@ -41,3 +44,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/app/google-services.json
+
+.firebaserc
+.firebase/
+firebase.json
+**/firebase_options.dart
+firepit-log.txt
