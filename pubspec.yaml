@@ -24,4 +24,13 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+  fonts:
+    - family: Potta_One
+      fonts:
+        - asset: assets/fonts/Potta_One/PottaOne-Regular.ttf
+          weight: 400
+    - family: Jersey_10
+      fonts:
+        - asset: assets/fonts/Jersey_10/Jersey10-Regular.ttf
+          weight: 400
   uses-material-design: true

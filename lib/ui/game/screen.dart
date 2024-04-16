@@ -63,7 +63,7 @@ class GameScreen extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     duration: const Duration(milliseconds: 500),
-                                    content: Text('$countつまでしか追加できません'),
+                                    content: Text('Only $count numbers can be selected'),
                                   ),
                                 );
                                 return;
@@ -73,7 +73,7 @@ class GameScreen extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     duration: const Duration(milliseconds: 500),
-                                    content: Text('$number はすでに追加されています'),
+                                    content: Text('The number $number is already selected'),
                                   ),
                                 );
                                 return;
@@ -88,9 +88,9 @@ class GameScreen extends StatelessWidget {
                 onPressed: () {
                   if (gameProvider.playerGuessNumbers.length != count) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        duration: Duration(milliseconds: 500),
-                        content: Text('3桁の数字を入力してください'),
+                      SnackBar(
+                        duration: const Duration(milliseconds: 500),
+                        content: Text('Please select $count numbers'),
                       ),
                     );
                     return;
