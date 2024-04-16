@@ -30,12 +30,12 @@ class HomeScreen extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) {
                         return GameScreen(
-                          title: '1人で遊ぶ',
+                          title: 'vs CPU',
                         );
                       }),
                     );
                   },
-                  child: const Text('1人で遊ぶ'),
+                  child: const Text('vs CPU'),
                 ),
               )
             ])));

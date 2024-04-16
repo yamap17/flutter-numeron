@@ -23,12 +23,12 @@ class ResultScreen extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
                     return GameScreen(
-                      title: '1人で遊ぶ',
+                      title: 'vs CPU',
                     );
                   }),
                 );
               },
-              child: const Text('1人で遊ぶ'),
+              child: const Text('vs CPU'),
             ),
           ),
           Container(
@@ -44,7 +44,7 @@ class ResultScreen extends StatelessWidget {
                   }),
                 );
               },
-              child: const Text('ホームに戻る'),
+              child: const Text('Home'),
             ),
           )
         ]));

@@ -32,7 +32,10 @@ class NumberCard extends StatelessWidget {
               width: 50,
               child: Text(
                 number == null ? '?' : number.toString(),
-                style: TextStyle(fontSize: fontSize),
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontFamily: 'Jersey_10',
+                ),
                 textAlign: TextAlign.center,
               ),
             ),

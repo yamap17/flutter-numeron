@@ -23,6 +23,7 @@ class NumeronApp extends StatelessWidget {
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
+            fontFamily: 'Jersey_10',
           ),
           home: const GoogleSignin(),
         ));
