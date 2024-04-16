@@ -8,7 +8,6 @@ class GuessResultCardListBoard extends StatelessWidget {
     required this.guessResults,
   });
 
-  // guessResults は GuessResult のリスト
   final List<GuessResult> guessResults;
   final double height;
 

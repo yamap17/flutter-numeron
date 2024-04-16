@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:numeron/ui/auth/google_signin.dart';
 import 'package:numeron/ui/game/provider.dart';
 import 'package:numeron/ui/home/provider.dart';
-import 'package:numeron/ui/home/screen.dart';
 import 'package:provider/provider.dart';
 
 class NumeronApp extends StatelessWidget {
@@ -24,7 +24,7 @@ class NumeronApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const HomeScreen(title: 'Numer0n'),
+          home: const GoogleSignin(),
         ));
   }
 }

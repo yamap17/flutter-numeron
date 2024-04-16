@@ -11,6 +11,12 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
   provider: ^6.1.2
+  firebase_auth: ^4.19.1
+  firebase_core: ^2.29.0
+  firebase_analytics: ^10.10.1
+  firebase_crashlytics: ^3.5.1
+  firebase_remote_config: ^4.4.1
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
