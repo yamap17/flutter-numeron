@@ -5,7 +5,7 @@ class GuessResult {
     required this.blows,
   });
 
-  final Map<int, int?> playerGuessNumbers;
+  final List<int> playerGuessNumbers;
   final int hits;
   final int blows;
 }

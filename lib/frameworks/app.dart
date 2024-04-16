@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:numeron/providers/game_provider.dart';
-import 'package:numeron/views/home_page.dart';
+import 'package:numeron/ui/game/provider.dart';
+import 'package:numeron/ui/home/provider.dart';
+import 'package:numeron/ui/home/screen.dart';
 import 'package:provider/provider.dart';
 
 class NumeronApp extends StatelessWidget {
@@ -10,6 +11,9 @@ class NumeronApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider<HomeProvider>(
+            create: (context) => HomeProvider(),
+          ),
           ChangeNotifierProvider<GameProvider>(
             create: (context) => GameProvider(),
           ),
@@ -20,7 +24,7 @@ class NumeronApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: HomePage(title: 'Numer0n'),
+          home: const HomeScreen(title: 'Numer0n'),
         ));
   }
 }

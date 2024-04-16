@@ -31,7 +31,7 @@ class NumberCard extends StatelessWidget {
               height: 80,
               width: 50,
               child: Text(
-                number == null ? '' : number.toString(),
+                number == null ? '?' : number.toString(),
                 style: TextStyle(fontSize: fontSize),
                 textAlign: TextAlign.center,
               ),
