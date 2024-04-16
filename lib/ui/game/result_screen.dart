@@ -39,7 +39,7 @@ class ResultScreen extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
                     return const HomeScreen(
-                      title: 'ホーム',
+                      title: 'Numer0n',
                     );
                   }),
                 );
