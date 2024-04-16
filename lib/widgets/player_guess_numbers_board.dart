@@ -17,6 +17,12 @@ class PlayerGuessNumbersBoard extends StatelessWidget {
   final Color color;
   final Function(int) onTap;
 
+  VoidCallback voidOnTap(int index) {
+    return () {
+      onTap(index);
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,8 +35,8 @@ class PlayerGuessNumbersBoard extends StatelessWidget {
           children: <Widget>[
             for (int i = 0; i < count; i++)
               NumberCard(
-                number: playerGuessNumbers[i],
-                onTap: () => onTap,
+                number: playerGuessNumbers.length > i ? playerGuessNumbers[i] : null,
+                onTap: voidOnTap(i),
               )
           ],
         ));

@@ -7,7 +7,13 @@ class GameProvider with ChangeNotifier {
   final int count = 3;
   List<int> targetNumbers = [];
   List<int> playerGuessNumbers = [];
-  List<GuessResult?> guessResults = [];
+  List<GuessResult> guessResults = [];
+
+  void initialize() {
+    debugPrint('initialize');
+
+    restartGame();
+  }
 
   void restartGame() {
     debugPrint('restartGame');
@@ -42,7 +48,7 @@ class GameProvider with ChangeNotifier {
     }
     final resultSelectedNumbers = List<int>.unmodifiable(playerGuessNumbers);
 
-    GuessResult guessResult = GuessResult(
+    var guessResult = GuessResult(
       playerGuessNumbers: resultSelectedNumbers,
       hits: hits,
       blows: blows,
